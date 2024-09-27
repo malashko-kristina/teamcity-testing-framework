@@ -1,0 +1,78 @@
+### Step 0 (works via Postman) Generate auth-token
+GET http://admin:admin@192.168.178.117:8111/authenticationTest.html?csrf
+Accept: application/json
+
+### Step 1 Create a project
+POST http://admin:admin@192.168.178.117:8111/app/rest/projects
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: fcf4a8f3-9612-4571-b924-52e3d83a40ab
+
+{
+    "parentProject": {
+        "locator": "_Root"
+    },
+    "name": "name",
+    "id": "id",
+    "copyAllAssociatedSettings": true
+}
+
+### Step 2 Create a build configuration
+
+POST http://admin:admin@192.168.178.117:8111/app/rest/buildTypes
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: bc059923-82c5-436c-856b-7501d03b924e
+
+{
+  "id": "BuildConfId123",
+  "name": "BuildConfName123",
+  "project": {
+    "id": "id"
+  },
+  "steps": {
+    "step": [
+      {
+        "name": "myCommandLineStep",
+        "type": "simpleRunner",
+        "properties": {
+          "property": [
+            {
+              "name": "script.content",
+              "value": "echo 'Hello World!'"
+            },
+            {
+              "name": "teamcity.step.mode",
+              "value": "default"
+            },
+            {
+              "name": "use.custom.script",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+### Step 3 Run a build configuration
+
+POST http://admin:admin@192.168.178.117:8111/app/rest/buildQueue
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: bc059923-82c5-436c-856b-7501d03b924e
+
+{
+  "buildType": {
+    "id": "BuildConfId123"
+  }
+}
+
+### Step 3 Check a build configuration status
+
+GET http://admin:admin@192.168.178.117:8111/app/rest/builds/id:6
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: bc059923-82c5-436c-856b-7501d03b924e
+
