@@ -12,9 +12,9 @@ public class Specifications {
 
     private static Specifications spec;
 
-    private Specifications() {} // Это паттерн Синглтон. нельзя больще создавать экземпляры его
+    private Specifications() {} // Это паттерн Синглтон. нельзя больше создавать экземпляры его
 
-    public static Specifications getSpec() { // нарантия того, что спецификация будет в одном экземпляре
+    public static Specifications getSpec() { // гарантия того, что спецификация будет в одном экземпляре
         if (spec == null) {
             spec = new Specifications();
         }
