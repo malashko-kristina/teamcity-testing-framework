@@ -12,32 +12,28 @@ public class Specifications {
 
     private static Specifications spec;
 
-    private Specifications() {} // Это паттерн Синглтон. нельзя больше создавать экземпляры его
-
-    public static Specifications getSpec() { // гарантия того, что спецификация будет в одном экземпляре
-        if (spec == null) {
-            spec = new Specifications();
-        }
-        return spec;
-    }
-
-    private RequestSpecBuilder reqBuilder() {
+    private static RequestSpecBuilder reqBuilder() {
         var requestBuilder = new RequestSpecBuilder();
         requestBuilder.addFilter(new RequestLoggingFilter());
         requestBuilder.addFilter(new ResponseLoggingFilter());
-        return requestBuilder;
-    }
-    public RequestSpecification unauthSpec() { // почему именно этот тип возвращаем?
-        var requestBuilder = reqBuilder();
         requestBuilder.setContentType(ContentType.JSON);
         requestBuilder.setAccept(ContentType.JSON);
+        return requestBuilder;
+    }
+
+    public static RequestSpecification superUserAuth() {
+        var requestBuilder = reqBuilder();
+        requestBuilder.setBaseUri("http://%s:%s@%s/httpAuth".formatted("", Config.getProperty("superUserToken"), Config.getProperty("host")));
+        return requestBuilder.build();
+    }
+    public static RequestSpecification unauthSpec() { // почему именно этот тип возвращаем?
+        var requestBuilder = reqBuilder();
         return requestBuilder.build();
     }
 
-    public RequestSpecification authSpec(User user) {
+    public static RequestSpecification authSpec(User user) {
         var requestBuilder = reqBuilder();
-        requestBuilder.setBaseUri("http://" + user.getUsername() + ":" + user.getPassword() + "@" +
-                Config.getProperty("host"));
+        requestBuilder.setBaseUri("http://%s:%s@%s".formatted(user.getUsername(), user.getPassword(), Config.getProperty("host")));
         return requestBuilder.build();
     }
 }
