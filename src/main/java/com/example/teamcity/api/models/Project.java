@@ -12,9 +12,9 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(callSuper=false)
 public class Project extends BaseModel{
+    @Random
     private String id;
     @Random
     private String name;
-    @Builder.Default
-    private String locator = "_Root";
+    private String locator;
 }
