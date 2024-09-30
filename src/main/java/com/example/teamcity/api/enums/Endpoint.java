@@ -11,8 +11,8 @@ import lombok.Getter;
 @Getter
 public enum Endpoint {
     BUILD_TYPES("/app/rest/buildTypes", BuildType.class), // почему именно такая структура?
-    PROJECT("/app/rest/projects",Project.class),
-    USERS("/app/rest/users",User .class);
+    PROJECTS("/app/rest/projects",Project.class),
+    USERS("/app/rest/users",User.class);
 
     private final String url;
     private final Class<? extends BaseModel> modelClass;

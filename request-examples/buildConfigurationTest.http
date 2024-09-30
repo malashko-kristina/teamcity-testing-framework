@@ -76,3 +76,37 @@ Content-Type: application/json
 Accept: application/json
 X-TC-CSRF-Token: bc059923-82c5-436c-856b-7501d03b924e
 
+### Step 4 Role activation
+PUT http://admin:admin@192.168.178.117:8111/app/rest/server/authSettings
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: b2a300fa-e569-4847-ba57-00aebd647e2e
+
+{
+  "allowGuest": true,
+  "guestUsername": "quest",
+  "welcomeText": "",
+  "collapseLoginForm": true,
+  "perProjectPermissions": true,
+  "emailVerification": true,
+  "modules": {
+    "module": [
+      {
+        "name": "",
+        "properties": {
+          "property": [
+            {
+              "name": "",
+              "value": "",
+              "inherited": true,
+              "type": {}
+            }
+          ],
+          "count": 0,
+          "href": ""
+        }
+      }
+    ]
+  }
+}
+
