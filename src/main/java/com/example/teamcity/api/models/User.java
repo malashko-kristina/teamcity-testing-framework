@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends BaseModel {
+    private int id;
     @Random
     private String username;
     @Random
