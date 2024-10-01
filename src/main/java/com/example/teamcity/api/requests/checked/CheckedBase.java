@@ -23,6 +23,8 @@ public final class CheckedBase<T extends BaseModel> extends Request implements C
                 .create(model)
                 .then().assertThat().statusCode(HttpStatus.SC_OK)
                 .extract().as(endpoint.getModelClass());
+
+        // мы уверены, что сущность создана
     }
 
     @Override

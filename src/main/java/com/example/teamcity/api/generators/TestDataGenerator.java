@@ -4,9 +4,11 @@ import com.example.teamcity.api.annotations.Optional;
 import com.example.teamcity.api.annotations.Parameterizable;
 import com.example.teamcity.api.annotations.Random;
 import com.example.teamcity.api.models.BaseModel;
+import com.example.teamcity.api.models.TestData;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -18,22 +20,22 @@ public final class TestDataGenerator {
 
     /**
      * Основной метод генерации тестовых данных.
-     *
+     * <p>
      * Если у поля аннотация Optional, оно пропускается, иначе:
-     *
+     * <p>
      * 1) если у поля аннотация Parameterizable, и в метод были переданы параметры, то поочередно (по мере встречи полей с
-     *     этой аннотацией) устанавливаются переданные параметры. То есть, если по ходу генерации было пройдено 4 поля с
-     *     аннотацией Parameterizable, но параметров в метод было передано 3, то значения будут установлены только у первых
-     *     трех встретившихся элементов в порядке их передачи в метод. Поэтому также важно следить за порядком полей
-     *     в @Data классе;
-     *
+     * этой аннотацией) устанавливаются переданные параметры. То есть, если по ходу генерации было пройдено 4 поля с
+     * аннотацией Parameterizable, но параметров в метод было передано 3, то значения будут установлены только у первых
+     * трех встретившихся элементов в порядке их передачи в метод. Поэтому также важно следить за порядком полей
+     * в @Data классе;
+     * <p>
      * 2) иначе, если у поля аннотация Random и это строка, оно заполняется рандомными данными;
-     *
+     * <p>
      * 3) иначе, если поле - наследник класса BaseModel, то оно генерируется, рекурсивно отправляясь в новый метод generate;
-     *
+     * <p>
      * 4) иначе, если поле - List, у которого generic type - наследник класса BaseModel, то оно устанавливается списком
-     *     из одного элемента, который генерируется, рекурсивно отправляясь в новый метод generate.
-     *
+     * из одного элемента, который генерируется, рекурсивно отправляясь в новый метод generate.
+     * <p>
      * Параметр generatedModels передается, когда генерируется несколько сущностей в цикле, и содержит в себе
      * сгенерированные на предыдущих шагах сущности. Позволяет при генерации сложной сущности, которая своим полем содержит
      * другую сущность, сгенерированную на предыдущем шаге, установить ее, а не генерировать новую. Данная логика
@@ -80,6 +82,29 @@ public final class TestDataGenerator {
             throw new IllegalStateException("Cannot generate test data", e);
         }
     }
+
+    public static TestData generate() {
+        // Идем по всем полям TestData и для каждого, кто наследник BaseModel вызывыем generate() c передачей уже сгенерированных сущностей
+        try {
+            var instance = TestData.class.getDeclaredConstructor().newInstance();
+            var generatedModels = new ArrayList<BaseModel>();
+            for (var field : TestData.class.getDeclaredFields()) {
+                field.setAccessible(true); // теперь можем обращаться к private полю
+                // Можем теперь обращаться к типу поля, так как у нас стоит field.setAccessible(true)
+                if (BaseModel.class.isAssignableFrom(field.getType())) { // Проверяем, является ли тип поля наследником класса BaseModel
+                    var generatedModel = generate(generatedModels, field.getType().asSubclass(BaseModel.class));
+                    field.set(instance, generatedModel); // Этому filed этого объекта instance TestData мы проставляем generatedModel
+                    generatedModels.add(generatedModel);
+                }
+                field.setAccessible(false);
+            }
+            return instance;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new IllegalStateException("Cannot generate a test data", e);
+        }
+    }
+
 
     // Метод, чтобы сгенерировать одну сущность. Передает пустой параметр generatedModels
     public static <T extends BaseModel> T generate(Class<T> generatorClass, Object... parameters) {

@@ -13,6 +13,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper=false)
 public class BuildType extends BaseModel{
     @Random
+    @Parameterizable
     private String id;
     @Random
     private String name;
