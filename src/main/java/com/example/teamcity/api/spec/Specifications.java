@@ -26,7 +26,7 @@ public class Specifications {
         requestBuilder.setBaseUri("http://%s:%s@%s/httpAuth".formatted("", Config.getProperty("superUserToken"), Config.getProperty("host")));
         return requestBuilder.build();
     }
-    public static RequestSpecification unauthSpec() { // почему именно этот тип возвращаем?
+    public static RequestSpecification unauthSpec() {
         var requestBuilder = reqBuilder();
         return requestBuilder.build();
     }

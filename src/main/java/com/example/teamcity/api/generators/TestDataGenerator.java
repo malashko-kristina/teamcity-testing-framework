@@ -84,8 +84,9 @@ public final class TestDataGenerator {
     }
 
     public static TestData generate() {
-        // Идем по всем полям TestData и для каждого, кто наследник BaseModel вызывыем generate() c передачей уже сгенерированных сущностей
+        // Идем по всем полям TestData и для каждого, кто наследник BaseModel вызываем generate() c передачей уже сгенерированных сущностей
         try {
+            // Здесь создаётся новый экземпляр класса TestData с использованием рефлексии. Это позволяет обойтись без явного вызова конструктора, даже если он приватный
             var instance = TestData.class.getDeclaredConstructor().newInstance();
             var generatedModels = new ArrayList<BaseModel>();
             for (var field : TestData.class.getDeclaredFields()) {
@@ -93,7 +94,7 @@ public final class TestDataGenerator {
                 // Можем теперь обращаться к типу поля, так как у нас стоит field.setAccessible(true)
                 if (BaseModel.class.isAssignableFrom(field.getType())) { // Проверяем, является ли тип поля наследником класса BaseModel
                     var generatedModel = generate(generatedModels, field.getType().asSubclass(BaseModel.class));
-                    field.set(instance, generatedModel); // Этому filed этого объекта instance TestData мы проставляем generatedModel
+                    field.set(instance, generatedModel); // Этому field этого объекта instance TestData мы проставляем generatedModel
                     generatedModels.add(generatedModel);
                 }
                 field.setAccessible(false);
