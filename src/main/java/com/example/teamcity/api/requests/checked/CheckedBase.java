@@ -50,7 +50,7 @@ public final class CheckedBase<T extends BaseModel> extends Request implements C
     public Object delete(String id) {
         return uncheckedBase
                 .delete(id)
-                .then().assertThat().statusCode(HttpStatus.SC_OK)
+                .then().assertThat().statusCode(HttpStatus.SC_NO_CONTENT)
                 .extract().asString();
     }
 }

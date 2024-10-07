@@ -29,6 +29,14 @@ public class ProjectTest extends BaseApiTest {
 
         var checkCreatedProject = userCheckRequests.<Project>getRequest(PROJECTS).read(project.getId());
         softy.assertEquals(project.getId(), checkCreatedProject.getId(), "Created Project ID is not correct");
+
+        userCheckRequests.getRequest(PROJECTS).delete(checkCreatedProject.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(checkCreatedProject.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(checkCreatedProject.getId())));
     }
 
     @Test(description = "User should not be able to create a project with empty id", groups = {"Negative", "CRUD", "Project"})
@@ -43,37 +51,53 @@ public class ProjectTest extends BaseApiTest {
                 .create(projectEmptyId)
                 .then().assertThat().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .body(Matchers.containsString("Project ID must not be empty"));
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(projectEmptyId.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectEmptyId.getId())));
     }
 
     @Test(description = "User should not be able to create a project if id starts with number", groups = {"Negative", "CRUD", "Project"})
     public void userCreatesProjectWithIdStartsWithNumberTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectIdWithNumber = generate(Project.class, RandomData.getStringWithNumber());
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectIdWithNumber)
                 .then().assertThat().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .body(Matchers.containsString(("Project ID \"%s\" is invalid: starts with non-letter character \'%c\'." +
                         " ID should start with a latin letter and contain only latin letters, digits and underscores (at most 225 characters).")
                         .formatted(projectIdWithNumber.getId(), projectIdWithNumber.getId().charAt(0))));
+
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectIdWithNumber.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithNumber.getId())));
     }
 
     @Test(description = "User should not be able to create a project if id includes invalid symbols", groups = {"Negative", "CRUD", "Project"})
     public void userCreatesProjectWithIdWithInvalidSymbolsTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectIdWithInvalidSymbol = generate(Project.class, RandomData.getStringWithRandomSpecialCharacter());
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectIdWithInvalidSymbol)
                 .then().assertThat().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .body(Matchers.containsString("Project ID \"%s\" is invalid: contains unsupported character "
                         .formatted(projectIdWithInvalidSymbol.getId())));
+
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectIdWithInvalidSymbol.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithInvalidSymbol.getId())));
 
     }
 
@@ -81,26 +105,30 @@ public class ProjectTest extends BaseApiTest {
     public void userCreatesProjectWithIdLCyrillicSymbolsTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectIdWithCyrillicSymbols = generate(Project.class, RandomData.getStringWithCyrillic());
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectIdWithCyrillicSymbols)
                 .then().assertThat().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .body(Matchers.containsString("Project ID \"%s\" is invalid: contains non-latin letter "
                         .formatted(projectIdWithCyrillicSymbols.getId())));
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectIdWithCyrillicSymbols.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithCyrillicSymbols.getId())));
     }
 
     @Test(description = "User should not be able to create a project if id has more than 225 symbols", groups = {"Negative", "CRUD", "Project"})
     public void userCreatesProjectWithIdLongerThan225SymbolsTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectIdWithMoreThen225Symbols = generate(Project.class, RandomData.getString(226));
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectIdWithMoreThen225Symbols)
                 .then().assertThat().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .body(Matchers.containsString(("Project ID \"%s\" is invalid: it is 226 characters long while" +
@@ -108,22 +136,31 @@ public class ProjectTest extends BaseApiTest {
                         " letters, digits and underscores (at most 225 characters).")
                         .formatted(projectIdWithMoreThen225Symbols.getId())));
 
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectIdWithMoreThen225Symbols.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithMoreThen225Symbols.getId())));
     }
 
     @Test(description = "User should not be able to create a project if id starts with _", groups = {"Negative", "CRUD", "Project"})
     public void userCreatesProjectWithIdStartsWith_Test() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectIdStartsWith_ = generate(Project.class, RandomData.getStringWith_());
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectIdStartsWith_)
                 .then().assertThat().statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR)
                 .body(Matchers.containsString(("Project ID \"%s\" is invalid: starts with non-letter character \'%c\'." +
                         " ID should start with a latin letter and contain only latin letters, digits and underscores (at most 225 characters).")
                         .formatted(projectIdStartsWith_.getId(), projectIdStartsWith_.getId().charAt(0))));
+
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectIdStartsWith_.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdStartsWith_.getId())));
     }
 
     @Test(description = "User should be able to create a project if id includes repeating symbols", groups = {"Positive", "CRUD", "Project"})
@@ -139,6 +176,13 @@ public class ProjectTest extends BaseApiTest {
         softy.assertEquals(projectIdWithRepeatingSymbols.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectIdWithRepeatingSymbols.getName(), project.getName(), "Project name is not correct");
 
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should be able to create a project if id has 225 symbols", groups = {"Positive", "CRUD", "Project"})
@@ -154,6 +198,13 @@ public class ProjectTest extends BaseApiTest {
         softy.assertEquals(projectIdWith225Symbols.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectIdWith225Symbols.getName(), project.getName(), "Project name is not correct");
 
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should be able to create a project if id includes latin letters, digits", groups = {"Positive", "CRUD", "Project"})
@@ -169,6 +220,13 @@ public class ProjectTest extends BaseApiTest {
         softy.assertEquals(projectIdWithLatinDigits.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectIdWithLatinDigits.getName(), project.getName(), "Project name is not correct");
 
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
 
@@ -185,6 +243,13 @@ public class ProjectTest extends BaseApiTest {
         softy.assertEquals(projectIdWithOneSymbol.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectIdWithOneSymbol.getName(), project.getName(), "Project name is not correct");
 
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should not be able to create a project with empty name", groups = {"Negative", "CRUD", "Project"})
@@ -192,14 +257,19 @@ public class ProjectTest extends BaseApiTest {
 
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectEmptyName = generate(Project.class, RandomData.getString(), "");
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectEmptyName)
                 .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(Matchers.containsString("Project name cannot be empty"));
+
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectEmptyName.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectEmptyName.getId())));
     }
 
     @Test(description = "User should be able to create a project if name has more than 225 symbols", groups = {"Positive", "CRUD", "Project"})
@@ -215,6 +285,13 @@ public class ProjectTest extends BaseApiTest {
         softy.assertEquals(projectNameWithMoreThen225Symbols.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectNameWithMoreThen225Symbols.getName(), project.getName(), "Project name is not correct");
 
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should be able to create a project if name has cyrillic symbols", groups = {"Positive", "CRUD", "Project"})
@@ -229,20 +306,33 @@ public class ProjectTest extends BaseApiTest {
 
         softy.assertEquals(projectNameWithCyrillicSymbols.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectNameWithCyrillicSymbols.getName(), project.getName(), "Project name is not correct");
+
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should not be able to create a project with empty id and name", groups = {"Negative", "CRUD", "Project"})
     public void userCreatesProjectWithEmptyNameAndIdTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectEmptyIdName = generate(Project.class, "", "");
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectEmptyIdName)
                 .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(Matchers.containsString("Project name cannot be empty"));
+
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectEmptyIdName.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectEmptyIdName.getId())));
 
     }
 
@@ -250,14 +340,19 @@ public class ProjectTest extends BaseApiTest {
     public void userCreatesProjectWithEmptyNameAndInvalidIdTest() {
         superUserCheckRequests.getRequest(USERS).create(testData.getUser());
 
-        var userCheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
+        var userUncheckRequests = new UncheckedRequests(Specifications.authSpec(testData.getUser()));
 
         var projectInvalidIdEmptyName = generate(Project.class, RandomData.getStringWith_(), "");
 
-        userCheckRequests.getRequest(PROJECTS)
+        userUncheckRequests.getRequest(PROJECTS)
                 .create(projectInvalidIdEmptyName)
                 .then().assertThat().statusCode(HttpStatus.SC_BAD_REQUEST)
                 .body(Matchers.containsString("Project name cannot be empty"));
+
+        userUncheckRequests.getRequest(PROJECTS)
+                .read(projectInvalidIdEmptyName.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectInvalidIdEmptyName.getId())));
     }
 
     @Test(description = "User should be able to create a project with 'copyAllAssociatedSettings' false", groups = {"Positive", "CRUD", "Project"})
@@ -274,6 +369,14 @@ public class ProjectTest extends BaseApiTest {
 
         softy.assertEquals(projectNameWithFalseSettings.getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(projectNameWithFalseSettings.getName(), project.getName(), "Project name is not correct");
+
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should be able to create a copy of a project", groups = {"Positive", "CRUD", "Project"})
@@ -293,6 +396,13 @@ public class ProjectTest extends BaseApiTest {
         var checkProjectCopy = userCheckRequests.<Project>getRequest(PROJECTS).read(copyProject.getId());
         softy.assertEquals(copyProject.getId(), checkProjectCopy.getId(), "Project with this Id is not found");
 
+        userCheckRequests.getRequest(PROJECTS).delete(project.getId());
+
+        new UncheckedRequests(Specifications.authSpec(testData.getUser()))
+                .getRequest(PROJECTS)
+                .read(project.getId())
+                .then().statusCode(HttpStatus.SC_NOT_FOUND)
+                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
 
     @Test(description = "User should not be able to create a copy of not existing project", groups = {"Negative", "CRUD", "Project"})
