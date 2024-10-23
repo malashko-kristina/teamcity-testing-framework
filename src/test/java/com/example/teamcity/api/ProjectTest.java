@@ -27,14 +27,14 @@ public class ProjectTest extends BaseApiTest {
         softy.assertEquals(testData.getProject().getId(), project.getId(), "Project ID is not correct");
         softy.assertEquals(testData.getProject().getName(), project.getName(), "Project name is not correct");
 
-        var checkCreatedProject = userCheckRequests.<Project>getRequest(PROJECTS).read(project.getId());
+        var checkCreatedProject = userCheckRequests.<Project>getRequest(PROJECTS).read("id:" + project.getId());
         softy.assertEquals(project.getId(), checkCreatedProject.getId(), "Created Project ID is not correct");
 
         userCheckRequests.getRequest(PROJECTS).delete(checkCreatedProject.getId());
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(checkCreatedProject.getId())
+                .read("id:" + checkCreatedProject.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(checkCreatedProject.getId())));
     }
@@ -54,7 +54,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(projectEmptyId.getId())
+                .read("id:" + projectEmptyId.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectEmptyId.getId())));
     }
@@ -75,7 +75,7 @@ public class ProjectTest extends BaseApiTest {
                         .formatted(projectIdWithNumber.getId(), projectIdWithNumber.getId().charAt(0))));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectIdWithNumber.getId())
+                .read("id:" + projectIdWithNumber.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithNumber.getId())));
     }
@@ -95,7 +95,7 @@ public class ProjectTest extends BaseApiTest {
                         .formatted(projectIdWithInvalidSymbol.getId())));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectIdWithInvalidSymbol.getId())
+                .read("id:" + projectIdWithInvalidSymbol.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithInvalidSymbol.getId())));
 
@@ -115,7 +115,7 @@ public class ProjectTest extends BaseApiTest {
                 .body(Matchers.containsString("Project ID \"%s\" is invalid: contains non-latin letter "
                         .formatted(projectIdWithCyrillicSymbols.getId())));
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectIdWithCyrillicSymbols.getId())
+                .read("id:" + projectIdWithCyrillicSymbols.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithCyrillicSymbols.getId())));
     }
@@ -137,7 +137,7 @@ public class ProjectTest extends BaseApiTest {
                         .formatted(projectIdWithMoreThen225Symbols.getId())));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectIdWithMoreThen225Symbols.getId())
+                .read("id:" + projectIdWithMoreThen225Symbols.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithMoreThen225Symbols.getId())));
     }
@@ -158,7 +158,7 @@ public class ProjectTest extends BaseApiTest {
                         .formatted(projectIdStartsWith_.getId(), projectIdStartsWith_.getId().charAt(0))));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectIdStartsWith_.getId())
+                .read("id:" + projectIdStartsWith_.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdStartsWith_.getId())));
     }
@@ -180,7 +180,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -202,7 +202,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -224,7 +224,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -247,7 +247,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -267,7 +267,7 @@ public class ProjectTest extends BaseApiTest {
                 .body(Matchers.containsString("Project name cannot be empty"));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectEmptyName.getId())
+                .read("id:" + projectEmptyName.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectEmptyName.getId())));
     }
@@ -289,7 +289,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -311,7 +311,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -330,7 +330,7 @@ public class ProjectTest extends BaseApiTest {
                 .body(Matchers.containsString("Project name cannot be empty"));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectEmptyIdName.getId())
+                .read("id:" + projectEmptyIdName.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectEmptyIdName.getId())));
 
@@ -350,7 +350,7 @@ public class ProjectTest extends BaseApiTest {
                 .body(Matchers.containsString("Project name cannot be empty"));
 
         userUncheckRequests.getRequest(PROJECTS)
-                .read(projectInvalidIdEmptyName.getId())
+                .read("id:" + projectInvalidIdEmptyName.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectInvalidIdEmptyName.getId())));
     }
@@ -374,7 +374,7 @@ public class ProjectTest extends BaseApiTest {
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
@@ -393,14 +393,14 @@ public class ProjectTest extends BaseApiTest {
 
         userCheckRequests.<Project>getRequest(PROJECTS).create(copyProject);
 
-        var checkProjectCopy = userCheckRequests.<Project>getRequest(PROJECTS).read(copyProject.getId());
+        var checkProjectCopy = userCheckRequests.<Project>getRequest(PROJECTS).read("id:" + copyProject.getId());
         softy.assertEquals(copyProject.getId(), checkProjectCopy.getId(), "Project with this Id is not found");
 
         userCheckRequests.getRequest(PROJECTS).delete(project.getId());
 
         new UncheckedRequests(Specifications.authSpec(testData.getUser()))
                 .getRequest(PROJECTS)
-                .read(project.getId())
+                .read("id:" + project.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
                 .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(project.getId())));
     }
