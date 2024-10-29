@@ -131,7 +131,7 @@ public class CreateProjectTest extends BaseUiTest {
         TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, createdProject);
     }
 
-    @Test(description = "User should not be able to create a project manually with empty project id", groups = {"Negative"})
+    @Test(description = "User should not be able to create a project manually with empty project name", groups = {"Negative"})
     public void userCreatesProjectManuallyWithoutProjectName() {
 
         step("Login as a user");
