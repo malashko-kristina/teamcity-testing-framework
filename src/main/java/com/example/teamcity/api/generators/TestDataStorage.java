@@ -65,6 +65,6 @@ public class TestDataStorage { // Decorator
                 )
                 )
         );
-        createdEntitiesMap.clear(); // так как запускаем этот метод после каждого теста
+        createdEntitiesMap.clear();
     }
 }

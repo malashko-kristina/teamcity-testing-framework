@@ -484,7 +484,7 @@ public class ProjectTest extends BaseApiTest {
 
         testData.getUser().setRoles(generate(Roles.class, "PROJECT_VIEWER"));
 
-        superUserCheckRequests.<User>getRequest(USERS).update(String.valueOf(createdUser.getId()), testData.getUser());
+        superUserCheckRequests.<User>getRequest(USERS).update("id:" + createdUser.getId(), testData.getUser());
 
         var projectViewerRequests = new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS);
 
@@ -501,7 +501,7 @@ public class ProjectTest extends BaseApiTest {
 
         testData.getUser().setRoles(generate(Roles.class, "PROJECT_DEVELOPER"));
 
-        superUserCheckRequests.getRequest(USERS).update(String.valueOf(createdUser.getId()), testData.getUser());
+        superUserCheckRequests.getRequest(USERS).update("id:" + createdUser.getId(), testData.getUser());
 
         var projectViewerRequests = new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS);
 
@@ -516,7 +516,7 @@ public class ProjectTest extends BaseApiTest {
 
         var createdUser = superUserCheckRequests.<User>getRequest(USERS).create(testData.getUser());
         testData.getUser().setRoles(generate(Roles.class, "AGENT_MANAGER"));
-        superUserCheckRequests.getRequest(USERS).update(String.valueOf(createdUser.getId()), testData.getUser());
+        superUserCheckRequests.getRequest(USERS).update("id:" + createdUser.getId(), testData.getUser());
 
         var adminManagerRequests = new UncheckedBase(Specifications.authSpec(testData.getUser()), PROJECTS);
 

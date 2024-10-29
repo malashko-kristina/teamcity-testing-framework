@@ -27,4 +27,8 @@ public abstract class BasePageElement {
     protected ElementsCollection findAll(String cssSelector) {
         return element.$$(cssSelector);
     }
+
+    public void click() {
+        element.click();
+    }
 }
