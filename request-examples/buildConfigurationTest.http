@@ -76,3 +76,64 @@ Content-Type: application/json
 Accept: application/json
 X-TC-CSRF-Token: bc059923-82c5-436c-856b-7501d03b924e
 
+### Step 4 GET AuthSettings
+GET http://admin:admin@192.168.178.117:8111/app/rest/server/authSettings
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: b2a300fa-e569-4847-ba57-00aebd647e2e
+
+
+### Step 5 PUT AuthSettings
+PUT http://admin:admin@192.168.178.117:8111/app/rest/server/authSettings
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: 95ec3166-4f1f-4230-9183-97aa8df54e36
+
+{
+  "allowGuest": false,
+  "guestUsername": "guest",
+  "welcomeText": "",
+  "collapseLoginForm": false,
+  "perProjectPermissions": true,
+  "emailVerification": false,
+  "modules": {
+    "module": [
+      {
+        "name": "Default",
+        "properties": {
+          "property": [
+            {
+              "name": "usersCanResetOwnPasswords",
+              "value": "true"
+            },
+            {
+              "name": "usersCanChangeOwnPasswords",
+              "value": "true"
+            },
+            {
+              "name": "freeRegistrationAllowed",
+              "value": "true"
+            }
+          ],
+          "count": 3
+        }
+      },
+      {
+        "name": "Token-Auth",
+        "properties": {
+          "property": [],
+          "count": 0
+        }
+      },
+      {
+        "name": "HTTP-Basic",
+        "properties": {
+          "property": [],
+          "count": 0
+        }
+      }
+    ]
+  }
+}
+
+
