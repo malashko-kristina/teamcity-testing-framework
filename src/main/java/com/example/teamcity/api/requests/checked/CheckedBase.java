@@ -39,17 +39,17 @@ public final class CheckedBase<T extends BaseModel> extends Request implements C
     }
 
     @Override
-    public T update(String id, BaseModel model) {
+    public T update(String locator, BaseModel model) {
         return (T) uncheckedBase
-                .update(id, model)
+                .update(locator, model)
                 .then().assertThat().statusCode(HttpStatus.SC_OK)
                 .extract().as(endpoint.getModelClass());
     }
 
     @Override
-    public Object delete(String id) {
+    public Object delete(String locator) {
         return uncheckedBase
-                .delete(id)
+                .delete(locator)
                 .then().assertThat().statusCode(HttpStatus.SC_NO_CONTENT)
                 .extract().asString();
     }
