@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @EqualsAndHashCode(callSuper=false)
-public class Project extends BaseModel{
+public class  Project extends BaseModel{
     @Random
     @Parameterizable
     private String id;
@@ -26,6 +26,7 @@ public class Project extends BaseModel{
     private Boolean copyAllAssociatedSettings = true;
     @Parameterizable
     private SourceProject sourceProject;
+    private Integer count;
 
     @Data
     @Builder
