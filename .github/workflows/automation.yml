@@ -8,7 +8,6 @@ on:
         required: true
         type: string
 
-
 jobs:
   validate-checkstyle:
     runs-on: ubuntu-latest
@@ -31,14 +30,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: TeamCity Setup
-        uses: ./.github/actions/teamcity-setup/action
-
+        uses: ./.github/actions/teamcity-setup
 
       - name: Run tests
         continue-on-error: true
-        # Указываем группу, чтобы не запустить тесты, связанные с сетапом тимсити
-        run: ./mvn test -Dtest='com.example.teamcity.${{ inputs.package }}.**' -Dgroups=Regression
-
-
-
-
+        # Указываем группу, чтобы не запустить тесты, связанные с сетапом TeamCity
+        run: ./mvnw test -Dtest='com.example.teamcity.${{ inputs.package }}.**' -Dgroups=Regression
