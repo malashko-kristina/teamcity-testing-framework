@@ -17,15 +17,17 @@ public class BaseApiTest extends BaseTest {
 
     @BeforeSuite(alwaysRun = true)
     public void setUpServerAuthSettings() {
-        // Получаем ткущие настройки perProjectPermissions
+        // Получаем текущие настройки perProjectPermissions
         perProjectPermissions = serverAuthRequest.read().getPerProjectPermissions();
 
         authModules = generate(AuthModules.class);
         // Обновляем значение perProjectPermissions на true
-        serverAuthRequest.update(ServerAuthSettings.builder()
-                .perProjectPermissions(true)
-                .modules(authModules)
-                .build());
+        if (perProjectPermissions == false) {
+            serverAuthRequest.update(ServerAuthSettings.builder()
+                    .perProjectPermissions(true)
+                    .modules(authModules)
+                    .build());
+        }
     }
 
     @AfterSuite(alwaysRun = true)
