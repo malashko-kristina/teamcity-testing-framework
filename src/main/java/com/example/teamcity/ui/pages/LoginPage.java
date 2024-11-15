@@ -3,7 +3,6 @@ package com.example.teamcity.ui.pages;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.api.models.User;
-import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
