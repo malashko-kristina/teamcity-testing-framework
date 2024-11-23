@@ -25,15 +25,15 @@ public class BaseApiTest extends BaseTest {
         authModules = generate(AuthModules.class);
         // Обновляем значение perProjectPermissions на true
         serverAuthRequest.update(ServerAuthSettings.builder()
-                    .perProjectPermissions(true)
-                    .modules(authModules)
-                    .build());
+                .perProjectPermissions(true)
+                .modules(authModules)
+                .build());
     }
 
     @Step("Set a default settings for perProjectPermissions")
     @AfterSuite(alwaysRun = true)
     public void cleanUpServerAuthSettings() {
-        // Возвращаем настройки perProjectPermissions исходное значение
+        // Возвращаем настройке perProjectPermissions исходное значение
         serverAuthRequest.update(ServerAuthSettings.builder()
                 .perProjectPermissions(perProjectPermissions)
                 .modules(authModules)

@@ -13,6 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthModules extends BaseModel {
+public class AuthModules extends BaseModel  {
     private List<AuthModule> module;
 }

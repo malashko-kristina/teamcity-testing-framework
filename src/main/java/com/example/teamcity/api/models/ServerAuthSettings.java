@@ -1,15 +1,17 @@
 package com.example.teamcity.api.models;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServerAuthSettings extends BaseModel {
-    @Builder.Default
-    private Boolean perProjectPermissions = true;
-    private AuthModules modules;
+    Boolean perProjectPermissions;
+    AuthModules modules;
 }
