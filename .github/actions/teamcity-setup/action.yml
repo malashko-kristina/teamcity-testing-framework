@@ -65,10 +65,6 @@ runs:
       shell: bash
       run: cat src/main/resources/config.properties
 
-    - name: Set up superUserToken config property
-      shell: bash
-      run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
-
     - name: Setup TeamCity server
       shell: bash
       # Настройка сервера при первом запуске (принятие лицензии, выбор базы данных и тд), реализованная в виде теста
@@ -77,4 +73,8 @@ runs:
     - name: Setup superUserToken environment variable
       shell: bash
       run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
+
+    - name: Set up superUserToken config property
+      shell: bash
+      run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
 
