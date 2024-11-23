@@ -5,6 +5,7 @@ import com.example.teamcity.api.models.AuthModules;
 import com.example.teamcity.api.models.ServerAuthSettings;
 import com.example.teamcity.api.requests.ServerAuthRequest;
 import com.example.teamcity.api.spec.Specifications;
+import io.qameta.allure.Step;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 
@@ -15,6 +16,7 @@ public class BaseApiTest extends BaseTest {
     private AuthModules authModules;
     private boolean perProjectPermissions;
 
+    @Step("Set 'true' for perProjectPermissions")
     @BeforeSuite(alwaysRun = true)
     public void setUpServerAuthSettings() {
         // Получаем текущие настройки perProjectPermissions
@@ -22,14 +24,13 @@ public class BaseApiTest extends BaseTest {
 
         authModules = generate(AuthModules.class);
         // Обновляем значение perProjectPermissions на true
-        if (perProjectPermissions == false) {
-            serverAuthRequest.update(ServerAuthSettings.builder()
+        serverAuthRequest.update(ServerAuthSettings.builder()
                     .perProjectPermissions(true)
                     .modules(authModules)
                     .build());
-        }
     }
 
+    @Step("Set a default settings for perProjectPermissions")
     @AfterSuite(alwaysRun = true)
     public void cleanUpServerAuthSettings() {
         // Возвращаем настройки perProjectPermissions исходное значение
