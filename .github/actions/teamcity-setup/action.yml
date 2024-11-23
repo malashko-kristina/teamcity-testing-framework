@@ -81,3 +81,6 @@ runs:
     - name: Set up superUserToken config property
       shell: bash
       run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
+
+    - name: Debug SUPER_USER_TOKEN
+      run: echo "SUPER_USER_TOKEN=$SUPER_USER_TOKEN"
