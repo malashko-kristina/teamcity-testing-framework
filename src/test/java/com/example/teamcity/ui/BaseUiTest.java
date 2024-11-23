@@ -9,8 +9,6 @@ import com.example.teamcity.api.enums.Endpoint;
 import com.example.teamcity.api.models.BuildType;
 import com.example.teamcity.api.models.Project;
 import com.example.teamcity.api.models.User;
-import com.example.teamcity.ui.components.Footer;
-import com.example.teamcity.ui.components.Header;
 import com.example.teamcity.ui.pages.LoginPage;
 import com.example.teamcity.ui.pages.admin.CreateProjectPage;
 import com.example.teamcity.ui.pages.admin.EditProjectPage;
@@ -27,8 +25,6 @@ import static com.example.teamcity.api.generators.TestDataGenerator.generate;
 public class BaseUiTest extends BaseTest {
     protected static final String REPO_URL = "https://github.com/AlexPshe/spring-core-for-qa";
     protected  static final Project firstProject = generate(Project.class);
-    protected static Footer footer;
-    protected static Header header;
 
     @BeforeSuite(alwaysRun = true)
     public void setupUiTest() {

@@ -13,6 +13,4 @@ public enum Endpoint {
 
     private final String url;
     private final Class<? extends BaseModel> modelClass;
-
-
 }
