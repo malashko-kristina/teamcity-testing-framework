@@ -61,10 +61,6 @@ runs:
         -p 8111:8111 \
         jetbrains/teamcity-server:2023.11.1
 
-    - name: Set up superUserToken config property
-      shell: bash
-      run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
-
     - name: Cat config.properties
       shell: bash
       run: cat src/main/resources/config.properties
@@ -77,4 +73,8 @@ runs:
     - name: Setup superUserToken environment variable
       shell: bash
       run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
+
+    - name: Set up superUserToken config property
+      shell: bash
+      run: echo "superUserToken=$SUPER_USER_TOKEN" >> src/main/resources/config.properties
 

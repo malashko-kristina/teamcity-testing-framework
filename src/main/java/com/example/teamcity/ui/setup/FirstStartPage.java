@@ -28,7 +28,7 @@ public class FirstStartPage extends BasePage {
         dbTypeSelector.shouldBe(Condition.visible, LONG_WAITING);
         proceedButton.click();
         acceptLicenseCheckBox.should(Condition.exist, LONG_WAITING).scrollTo().click();
-        submitButton.shouldBe(Condition.clickable).click();
+        submitButton.click();
         return this;
     }
 }
