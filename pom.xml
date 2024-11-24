@@ -16,7 +16,7 @@
         <aspectj.version>1.9.19</aspectj.version>
         <allure.version>2.27.0</allure.version>
         <rest-assured.version>5.3.1</rest-assured.version>
-        <lombok.version>1.18.34</lombok.version>
+        <lombok.version>1.18.28</lombok.version>
         <jackson.version>2.17.2</jackson.version>
         <selenide.version>7.4.3</selenide.version>
         <swagger-coverage-version>1.5.0</swagger-coverage-version>
@@ -67,7 +67,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

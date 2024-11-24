@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
 public class Steps extends BaseModel{
     private Integer count;
     private List<Step> step;

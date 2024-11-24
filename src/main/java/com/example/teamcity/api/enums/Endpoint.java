@@ -11,6 +11,9 @@ public enum Endpoint {
     PROJECTS("/app/rest/projects", Project.class),
     USERS("/app/rest/users", User.class);
 
+    @Getter
     private final String url;
+    @Getter
     private final Class<? extends BaseModel> modelClass;
+
 }
