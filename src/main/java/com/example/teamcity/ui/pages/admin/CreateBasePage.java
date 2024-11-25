@@ -10,16 +10,16 @@ import static com.codeborne.selenide.Selenide.$;
 public abstract class CreateBasePage extends BasePage {
     protected static final String CREATE_URL = "/admin/createObjectMenu.html?projectId=%s&showMode=%s";
 
-    protected SelenideElement urlInput = $("#url");
+    protected SelenideElement urlInput = $("input[id='url']");
     protected SelenideElement submitButton = $(Selectors.byAttribute("value", "Proceed"));
     protected SelenideElement buildTypeNameInput = $("#buildTypeName");
     protected SelenideElement buildTypeIdInput = $("#buildTypeExternalId");
     protected SelenideElement connectionSuccessfulMessage = $(".connectionSuccessful");
-    protected SelenideElement projectNameInput = $("#name");
+    protected SelenideElement projectNameInput = $("input[id='projectName']");
     protected SelenideElement projectIdInput = $("#externalId");
     protected SelenideElement createButton = $("input[class*='submitButton']");
     protected SelenideElement createFromUrlLink = $("a[href = '#createFromUrl']");
-    protected SelenideElement createManuallyLink = $("a[href = '#createManually']");
+    protected SelenideElement createManuallyLink = $("a[data-hint-container-id='create-project']");
     protected SelenideElement description = $("#description");
 
     protected void baseWithUrlCreateForm(String url) {
