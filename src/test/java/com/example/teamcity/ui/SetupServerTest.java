@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 public class SetupServerTest extends BaseUiTest {
     @Test(groups = {"Setup"})
-    public void setupTeamCityServerTest() {
+    public void setupTeamCityServerTest(){
         FirstStartPage.open().setupFirstStart();
     }
 }

@@ -1,5 +1,4 @@
 name: Teamcity Setup
-
 runs:
   using: composite
   steps:
@@ -9,10 +8,13 @@ runs:
         java-version: '17'
         distribution: 'zulu'
 
-    # По умолчанию в ubuntu отсуствуе команда ifconfig
+    # По умолчанию в ubuntu отсутствует команда ifconfig
     - name: Install ifconfig
       shell: bash
-      run: sudo apt-get update && sudo apt-get install -y net-tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y net-tools
+        echo "ifconfig installation complete"
 
     - name: Set up host environment variable
       shell: bash
@@ -72,7 +74,13 @@ runs:
 
     - name: Setup superUserToken environment variable
       shell: bash
-      run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
+      run: |
+        SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')
+        if [ -z "$SUPER_USER_TOKEN" ]; then
+          echo "Error: Super user token is not found"
+          exit 1
+        fi
+        echo "SUPER_USER_TOKEN=$SUPER_USER_TOKEN" >> $GITHUB_ENV
 
     - name: Set up superUserToken config property
       shell: bash
