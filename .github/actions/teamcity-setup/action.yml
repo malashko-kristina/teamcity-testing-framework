@@ -1,4 +1,5 @@
 name: Teamcity Setup
+
 runs:
   using: composite
   steps:
@@ -8,13 +9,10 @@ runs:
         java-version: '17'
         distribution: 'zulu'
 
-    # По умолчанию в ubuntu отсутствует команда ifconfig
+    # По умолчанию в ubuntu отсуствуе команда ifconfig
     - name: Install ifconfig
       shell: bash
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y net-tools
-        echo "ifconfig installation complete"
+      run: sudo apt-get update && sudo apt-get install -y net-tools
 
     - name: Set up host environment variable
       shell: bash
@@ -53,9 +51,9 @@ runs:
         aerokube/selenoid-ui:latest-release \
         --selenoid-uri http://$HOST:4444
 
-    - name: Run Teamcity Server
+    - name: Run TeamCity Server
       shell: bash
-      # Флаг -u 0 запускает контейнер от имени root, чтобы был доступ к записи файлов в директории, которые указаны в volume
+      # Флаг -u 0 запускает контейнер от имени root, чтобы был доступ к записи файлов в директории, которые указаны в volume.
       run: |
         docker run -u 0 -d --name teamcity-server  \
         -v $(pwd)/tmp/teamcity_server/datadir:/data/teamcity_server/datadir \
@@ -72,15 +70,10 @@ runs:
       # Настройка сервера при первом запуске (принятие лицензии, выбор базы данных и тд), реализованная в виде теста
       run: ./mvnw clean test -Dtest=SetupServerTest#setupTeamCityServerTest
 
+
     - name: Setup superUserToken environment variable
       shell: bash
-      run: |
-        SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')
-        if [ -z "$SUPER_USER_TOKEN" ]; then
-          echo "Error: Super user token is not found"
-          exit 1
-        fi
-        echo "SUPER_USER_TOKEN=$SUPER_USER_TOKEN" >> $GITHUB_ENV
+      run: echo "SUPER_USER_TOKEN=$(docker logs teamcity-server | grep 'Super user authentication token' | tail -n 1 | awk '{print $6}')" >> $GITHUB_ENV
 
     - name: Set up superUserToken config property
       shell: bash
