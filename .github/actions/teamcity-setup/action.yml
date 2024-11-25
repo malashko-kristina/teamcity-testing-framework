@@ -60,13 +60,6 @@ runs:
         -v $(pwd)/tmp/teamcity_server/logs:/opt/teamcity/logs  \
         -p 8111:8111 \
         jetbrains/teamcity-server:2023.11.1
-        
-      # Ждем 5 секунд для инициализации
-        sleep 5
-
-      # Выводим логи контейнера teamcity-server
-        echo "Viewing logs for teamcity-server:"
-        docker logs teamcity-server --tail 50
 
     - name: Cat config.properties
       shell: bash
