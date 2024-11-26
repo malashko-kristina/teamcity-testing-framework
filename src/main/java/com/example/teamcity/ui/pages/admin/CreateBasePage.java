@@ -25,6 +25,7 @@ public abstract class CreateBasePage extends BasePage {
 
     protected void baseWithUrlCreateForm(String url) {
         urlInput.val(url);
+        submitButton.shouldBe(Condition.visible);
         submitButton.click();
     }
 
@@ -35,24 +36,29 @@ public abstract class CreateBasePage extends BasePage {
     protected void baseManualCreateProjectForm(String projectName, String projectId) {
         projectNameInput.val(projectName);
         projectIdInput.val(projectId);
+        createButton.shouldBe(Condition.visible);
         createButton.click();
     }
 
     protected void switchToCreateFromUrl() {
+        createFromUrlLink.shouldBe(Condition.visible);
         createFromUrlLink.click();
     }
 
     protected void switchToCreateProjectManually() {
+        createManuallyProjectLink.shouldBe(Condition.visible);
         createManuallyProjectLink.click();
     }
 
     protected void switchToCreateBuildTypeManually() {
+        createManuallyProjectLink.shouldBe(Condition.visible);
         createManuallyBuildTypeLink.click();
     }
 
     protected void baseManualCreateBuildTypeForm(String buildTypeName, String buildTypeId) {
         buildTypeNameInput.val(buildTypeName);
         buildTypeIdInput.val(buildTypeId);
+        createButton.shouldBe(Condition.visible);
         createButton.click();
     }
 }
