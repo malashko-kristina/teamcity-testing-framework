@@ -48,6 +48,7 @@ public abstract class CreateBasePage extends BasePage {
     protected void switchToCreateProjectManually() {
         createManuallyProjectLink.shouldBe(Condition.visible);
         createManuallyProjectLink.click();
+        projectNameInput.shouldBe(Condition.visible);
     }
 
     protected void switchToCreateBuildTypeManually() {
