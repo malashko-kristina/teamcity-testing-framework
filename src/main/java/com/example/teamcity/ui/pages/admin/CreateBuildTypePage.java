@@ -21,7 +21,7 @@ public class CreateBuildTypePage extends CreateBasePage{
     }
 
     public EditVCSRootPage createFormManually (String buildTypeName, String buildTypeId) {
-        switchToCreateManually();
+        switchToCreateBuildTypeManually();
         baseManualCreateBuildTypeForm(buildTypeName, buildTypeId);
         return Selenide.page(EditVCSRootPage.class);
     }

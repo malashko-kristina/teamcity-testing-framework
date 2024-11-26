@@ -15,11 +15,12 @@ public abstract class CreateBasePage extends BasePage {
     protected SelenideElement buildTypeNameInput = $("#buildTypeName");
     protected SelenideElement buildTypeIdInput = $("#buildTypeExternalId");
     protected SelenideElement connectionSuccessfulMessage = $(".connectionSuccessful");
-    protected SelenideElement projectNameInput = $("input[id='projectName']");
+    protected SelenideElement projectNameInput = $("input[id='name']");
     protected SelenideElement projectIdInput = $("#externalId");
     protected SelenideElement createButton = $("input[class*='submitButton']");
     protected SelenideElement createFromUrlLink = $("a[href = '#createFromUrl']");
-    protected SelenideElement createManuallyLink = $("a[data-hint-container-id='create-project']");
+    protected SelenideElement createManuallyProjectLink = $("a[data-hint-container-id='create-project']");
+    protected SelenideElement createManuallyBuildTypeLink = $("a[data-hint-container-id='create-build-configuration']");
     protected SelenideElement description = $("#description");
 
     protected void baseWithUrlCreateForm(String url) {
@@ -41,8 +42,12 @@ public abstract class CreateBasePage extends BasePage {
         createFromUrlLink.click();
     }
 
-    protected void switchToCreateManually() {
-    createManuallyLink.click();
+    protected void switchToCreateProjectManually() {
+        createManuallyProjectLink.click();
+    }
+
+    protected void switchToCreateBuildTypeManually() {
+        createManuallyBuildTypeLink.click();
     }
 
     protected void baseManualCreateBuildTypeForm(String buildTypeName, String buildTypeId) {
