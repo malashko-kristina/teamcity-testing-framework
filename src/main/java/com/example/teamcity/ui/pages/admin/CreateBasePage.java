@@ -51,7 +51,7 @@ public abstract class CreateBasePage extends BasePage {
     }
 
     protected void switchToCreateBuildTypeManually() {
-        createManuallyProjectLink.shouldBe(Condition.visible);
+        createManuallyBuildTypeLink.shouldBe(Condition.visible);
         createManuallyBuildTypeLink.click();
     }
 
