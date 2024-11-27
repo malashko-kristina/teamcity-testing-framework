@@ -10,20 +10,22 @@ import static com.codeborne.selenide.Selenide.$;
 public abstract class CreateBasePage extends BasePage {
     protected static final String CREATE_URL = "/admin/createObjectMenu.html?projectId=%s&showMode=%s";
 
-    protected SelenideElement urlInput = $("#url");
+    protected SelenideElement urlInput = $("input[id='url']");
     protected SelenideElement submitButton = $(Selectors.byAttribute("value", "Proceed"));
     protected SelenideElement buildTypeNameInput = $("#buildTypeName");
     protected SelenideElement buildTypeIdInput = $("#buildTypeExternalId");
     protected SelenideElement connectionSuccessfulMessage = $(".connectionSuccessful");
-    protected SelenideElement projectNameInput = $("#name");
+    protected SelenideElement projectNameInput = $("input[id='name']");
     protected SelenideElement projectIdInput = $("#externalId");
     protected SelenideElement createButton = $("input[class*='submitButton']");
     protected SelenideElement createFromUrlLink = $("a[href = '#createFromUrl']");
-    protected SelenideElement createManuallyLink = $("a[href = '#createManually']");
+    protected SelenideElement createManuallyProjectLink = $("a[data-hint-container-id='create-project']");
+    protected SelenideElement createManuallyBuildTypeLink = $("a[data-hint-container-id='create-build-configuration']");
     protected SelenideElement description = $("#description");
 
     protected void baseWithUrlCreateForm(String url) {
         urlInput.val(url);
+        submitButton.shouldBe(Condition.visible);
         submitButton.click();
     }
 
@@ -34,20 +36,30 @@ public abstract class CreateBasePage extends BasePage {
     protected void baseManualCreateProjectForm(String projectName, String projectId) {
         projectNameInput.val(projectName);
         projectIdInput.val(projectId);
+        createButton.shouldBe(Condition.visible);
         createButton.click();
     }
 
     protected void switchToCreateFromUrl() {
+        createFromUrlLink.shouldBe(Condition.visible);
         createFromUrlLink.click();
     }
 
-    protected void switchToCreateManually() {
-    createManuallyLink.click();
+    protected void switchToCreateProjectManually() {
+        createManuallyProjectLink.shouldBe(Condition.visible);
+        createManuallyProjectLink.click();
+        projectNameInput.shouldBe(Condition.visible);
+    }
+
+    protected void switchToCreateBuildTypeManually() {
+        createManuallyBuildTypeLink.shouldBe(Condition.visible);
+        createManuallyBuildTypeLink.click();
     }
 
     protected void baseManualCreateBuildTypeForm(String buildTypeName, String buildTypeId) {
         buildTypeNameInput.val(buildTypeName);
         buildTypeIdInput.val(buildTypeId);
+        createButton.shouldBe(Condition.visible);
         createButton.click();
     }
 }
