@@ -10,6 +10,8 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ServerAuthSettings extends BaseModel {
     @Builder.Default
+    @Getter
     private Boolean perProjectPermissions = true;
+    @Getter
     private AuthModules modules;
 }

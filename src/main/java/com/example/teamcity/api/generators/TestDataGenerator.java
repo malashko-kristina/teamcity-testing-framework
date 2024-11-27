@@ -5,6 +5,7 @@ import com.example.teamcity.api.annotations.Parameterizable;
 import com.example.teamcity.api.annotations.Random;
 import com.example.teamcity.api.models.BaseModel;
 import com.example.teamcity.api.models.TestData;
+import lombok.NoArgsConstructor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;

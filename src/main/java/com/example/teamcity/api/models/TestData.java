@@ -1,8 +1,14 @@
 package com.example.teamcity.api.models;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.AllArgsConstructor;
 
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 public class TestData extends BaseModel {
     private Project project;
     private User user;
