@@ -16,5 +16,4 @@ public abstract class BasePage {
     {
         return collection.stream().map(creator).toList();
     }
-
 }

@@ -6,14 +6,19 @@ import lombok.*;
 
 @Builder
 @Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends BaseModel {
+    @Getter
     private int id;
     @Random
+    @Getter
     private String username;
     @Random
+    @Getter
     private String password;
+    @Getter
     private Roles roles;
 }
