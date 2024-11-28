@@ -109,6 +109,7 @@ public class CreateProjectTest extends BaseUiTest {
         createFirstProject();
 
         step("Create a project manually");
+        CreateProjectPage.open("_Root");
         CreateProjectPage.open("_Root")
                 .createFormManually(testData.getProject().getName(),testData.getProject().getId());
         EditProjectPage.checkSuccessMessageText(testData.getProject().getName());
