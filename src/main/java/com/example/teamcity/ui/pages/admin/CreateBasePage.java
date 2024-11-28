@@ -2,6 +2,7 @@ package com.example.teamcity.ui.pages.admin;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.ui.pages.BasePage;
 
@@ -51,9 +52,11 @@ public abstract class CreateBasePage extends BasePage {
     }
 
     protected void switchToCreateProjectManually() {
-        createManuallyProjectLink.shouldBe(Condition.clickable);
+        Selenide.sleep(2000);
+        createManuallyProjectLink.shouldBe(Condition.visible);
         createManuallyProjectLink.click();
         createManuallyProjectLink.click();
+        Selenide.sleep(2000);
         projectNameInput.shouldBe(Condition.visible);
     }
 

@@ -29,6 +29,7 @@ public class CreateProjectPage extends CreateBasePage {
     }
 
     public CreateProjectPage createFormManually (String projectName, String projectId) {
+        Selenide.sleep(4000);
         switchToCreateProjectManually();
         baseManualCreateProjectForm(projectName, projectId);
         return this;

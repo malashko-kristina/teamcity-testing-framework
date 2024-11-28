@@ -99,37 +99,37 @@ public class CreateProjectTest extends BaseUiTest {
         softy.assertTrue(noEmptyProjectNames);
     }
 
-//    @Test(description = "User should be able to create a project manually", groups = {"Positive"})
-//    public void userCreatesProjectManually() {
-//
-//        step("Login as a user");
-//        loginAs(testData.getUser());
-//
-//        step("Create a first project on API level");
-//        createFirstProject();
-//
-//        step("Create a project manually");
-//        CreateProjectPage.openManualCreation("_Root")
-//                .createFormManually(testData.getProject().getName(),testData.getProject().getId());
-//        EditProjectPage.checkSuccessMessageText(testData.getProject().getName());
-//
-//        step("Check that project was successfully created with correct data on API level");
-//        var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
-//                .read("name:" + testData.getProject().getName());
-//        softy.assertNotNull(createdProject);
-//
-//        step("Check that project is visible on Project Page (http://localhost:8111/favorite/projects)");
-//        ProjectPage.open(createdProject.getId())
-//                .title.shouldHave(Condition.exactText(testData.getProject().getName()));
-//
-//        var projectExist = ProjectsPage.open()
-//                .getProjects().stream()
-//                .anyMatch(project -> project.getName().text().equals(testData.getProject().getName()));
-//        softy.assertTrue(projectExist);
-//
-//        step("Clean up of created projects on API level");
-//        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, createdProject);
-//    }
+    @Test(description = "User should be able to create a project manually", groups = {"Positive"})
+    public void userCreatesProjectManually() {
+
+        step("Login as a user");
+        loginAs(testData.getUser());
+
+        step("Create a first project on API level");
+        createFirstProject();
+
+        step("Create a project manually");
+        CreateProjectPage.openManualCreation("_Root")
+                .createFormManually(testData.getProject().getName(),testData.getProject().getId());
+        EditProjectPage.checkSuccessMessageText(testData.getProject().getName());
+
+        step("Check that project was successfully created with correct data on API level");
+        var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
+                .read("name:" + testData.getProject().getName());
+        softy.assertNotNull(createdProject);
+
+        step("Check that project is visible on Project Page (http://localhost:8111/favorite/projects)");
+        ProjectPage.open(createdProject.getId())
+                .title.shouldHave(Condition.exactText(testData.getProject().getName()));
+
+        var projectExist = ProjectsPage.open()
+                .getProjects().stream()
+                .anyMatch(project -> project.getName().text().equals(testData.getProject().getName()));
+        softy.assertTrue(projectExist);
+
+        step("Clean up of created projects on API level");
+        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, createdProject);
+    }
 
     @Test(description = "User should not be able to create a project manually with empty project name", groups = {"Negative"})
     public void userCreatesProjectManuallyWithoutProjectName() {
