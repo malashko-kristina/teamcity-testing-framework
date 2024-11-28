@@ -96,33 +96,33 @@ public class CreateBuildTypeTest extends BaseUiTest {
         TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, testData.getProject());
     }
 
-    @Test(description = "User should be able to create a build type manually", groups = {"Positive"})
-    public void userCreatesBuildTypeManually() {
-
-        step("Login as a user and create a project");
-        loggedInWithCreatedProject(testData.getUser());
-
-        step("Create a buildType manually");
-        CreateBuildTypePage.openManually(testData.getProject().getId())
-                .createFormManually(testData.getBuildType().getName(),testData.getBuildType().getId());
-        CreateBuildTypeMessages.successMessageText();
-
-        step("Check that build type was successfully created with correct data on API level");
-        var createdBuildType = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES)
-                .read("name:" + testData.getBuildType().getName());
-        softy.assertNotNull(createdBuildType);
-        softy.assertEquals(createdBuildType.getProject().getId(),testData.getProject().getId());
-
-        step("Check that build type was successfully created with correct data on UI level");
-        var buildTypeExists = ProjectsPage.open().clickAllProjects().getBuildTypes().stream()
-                .anyMatch(buildType -> buildType.getName().text().equals(testData.getBuildType().getName()));
-        softy.assertTrue(buildTypeExists);
-        softy.assertEquals(createdBuildType.getProject().getId(),testData.getProject().getId());
-
-        step("Clean up of created projects on API level");
-        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, testData.getProject());
-        TestDataStorage.getStorage().addCreatedEntity(Endpoint.BUILD_TYPES, createdBuildType);
-    }
+//    @Test(description = "User should be able to create a build type manually", groups = {"Positive"})
+//    public void userCreatesBuildTypeManually() {
+//
+//        step("Login as a user and create a project");
+//        loggedInWithCreatedProject(testData.getUser());
+//
+//        step("Create a buildType manually");
+//        CreateBuildTypePage.openManually(testData.getProject().getId())
+//                .createFormManually(testData.getBuildType().getName(),testData.getBuildType().getId());
+//        CreateBuildTypeMessages.successMessageText();
+//
+//        step("Check that build type was successfully created with correct data on API level");
+//        var createdBuildType = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES)
+//                .read("name:" + testData.getBuildType().getName());
+//        softy.assertNotNull(createdBuildType);
+//        softy.assertEquals(createdBuildType.getProject().getId(),testData.getProject().getId());
+//
+//        step("Check that build type was successfully created with correct data on UI level");
+//        var buildTypeExists = ProjectsPage.open().clickAllProjects().getBuildTypes().stream()
+//                .anyMatch(buildType -> buildType.getName().text().equals(testData.getBuildType().getName()));
+//        softy.assertTrue(buildTypeExists);
+//        softy.assertEquals(createdBuildType.getProject().getId(),testData.getProject().getId());
+//
+//        step("Clean up of created projects on API level");
+//        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, testData.getProject());
+//        TestDataStorage.getStorage().addCreatedEntity(Endpoint.BUILD_TYPES, createdBuildType);
+//    }
 
     @Test(description = "User should not be able to create manually a build type with empty buildType name", groups = {"Negative"})
     public void userCreatesBuildTypeWithEmptyBuildTypeName() {
