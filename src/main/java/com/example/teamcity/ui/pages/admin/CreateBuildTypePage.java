@@ -5,8 +5,12 @@ import com.codeborne.selenide.Selenide;
 public class CreateBuildTypePage extends CreateBasePage{
     private static final String BUILD_TYPE_SHOW_MODE = "createBuildTypeMenu";
 
-    public static CreateBuildTypePage open(String projectId) {
-        return Selenide.open(CREATE_URL.formatted(projectId, BUILD_TYPE_SHOW_MODE), CreateBuildTypePage.class);
+    public static CreateBuildTypePage openManually(String projectId) {
+        return Selenide.open(CREATE_URL.formatted(projectId, BUILD_TYPE_SHOW_MODE, createManually), CreateBuildTypePage.class);
+    }
+
+    public static CreateBuildTypePage openUrl(String projectId) {
+        return Selenide.open(CREATE_URL.formatted(projectId, BUILD_TYPE_SHOW_MODE, createFromUrl), CreateBuildTypePage.class);
     }
 
     public CreateBuildTypePage createFormWithUrl(String url) {

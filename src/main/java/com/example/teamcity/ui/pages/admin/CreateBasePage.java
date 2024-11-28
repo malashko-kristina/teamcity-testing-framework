@@ -8,18 +8,20 @@ import com.example.teamcity.ui.pages.BasePage;
 import static com.codeborne.selenide.Selenide.$;
 
 public abstract class CreateBasePage extends BasePage {
-    protected static final String CREATE_URL = "/admin/createObjectMenu.html?projectId=%s&showMode=%s";
+    protected static final String CREATE_URL = "/admin/createObjectMenu.html?projectId=%s&showMode=%s#%s";
+    protected static final String createFromUrl = "createFromUrl";
+    protected static final String createManually = "createManually";
 
     protected SelenideElement urlInput = $("input[id='url']");
     protected SelenideElement submitButton = $(Selectors.byAttribute("value", "Proceed"));
     protected SelenideElement buildTypeNameInput = $("#buildTypeName");
     protected SelenideElement buildTypeIdInput = $("#buildTypeExternalId");
     protected SelenideElement connectionSuccessfulMessage = $(".connectionSuccessful");
-    protected SelenideElement projectNameInput = $("#name");
+    protected SelenideElement projectNameInput = $("input#name.longField");
     protected SelenideElement projectIdInput = $("#externalId");
     protected SelenideElement createButton = $("input[class*='submitButton']");
     protected SelenideElement createFromUrlLink = $("a[href = '#createFromUrl']");
-    protected SelenideElement createManuallyProjectLink = $("a[data-hint-container-id='create-project']");
+    protected SelenideElement createManuallyProjectLink = $("a[href='#createManually']");
     protected SelenideElement createManuallyBuildTypeLink = $("a[data-hint-container-id='create-build-configuration']");
     protected SelenideElement description = $("#description");
 

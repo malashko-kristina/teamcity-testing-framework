@@ -23,7 +23,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         loggedInWithCreatedProject(testData.getUser());
 
         step("Check create buildType with URL");
-        CreateBuildTypePage.open(testData.getProject().getId()).createFormWithUrl(REPO_URL).checkConnectionMessage()
+        CreateBuildTypePage.openUrl(testData.getProject().getId()).createFormWithUrl(REPO_URL).checkConnectionMessage()
                 .setupProject(testData.getBuildType().getName());
 
         step("Check that build type was successfully created with correct data on API level ");
@@ -53,7 +53,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         createFirstProject();
 
         step("Create a project with URL");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openUrlCreation("_Root")
                 .createFormWithUrl(REPO_URL).checkConnectionMessage()
                 .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
 
@@ -85,7 +85,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         int count = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("").getCount();
 
         step("Check that buildType wasn't created with empty URL");
-        CreateBuildTypePage.open(testData.getProject().getId()).createFormWithUrl("");
+        CreateBuildTypePage.openUrl(testData.getProject().getId()).createFormWithUrl("");
         CreateBuildTypeErrors.checkEmptyUrlBuildTypeError();
 
         step("Check that amount of build types wasn't changed on API level");
@@ -103,7 +103,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         loggedInWithCreatedProject(testData.getUser());
 
         step("Create a buildType manually");
-        CreateBuildTypePage.open(testData.getProject().getId())
+        CreateBuildTypePage.openManually(testData.getProject().getId())
                 .createFormManually(testData.getBuildType().getName(),testData.getBuildType().getId());
         CreateBuildTypeMessages.successMessageText();
 
@@ -134,7 +134,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         int count = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("").getCount();
 
         step("Check that buildType wasn't created with empty buildType name");
-        CreateBuildTypePage.open(testData.getProject().getId())
+        CreateBuildTypePage.openManually(testData.getProject().getId())
                 .createFormManually("", testData.getBuildType().getId());
         CreateBuildTypeErrors.checkEmptyBuildTypeNameError();
 
@@ -161,7 +161,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         int count = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("").getCount();
 
         step("Check that buildType wasn't created with empty buildType name");
-        CreateBuildTypePage.open(testData.getProject().getId())
+        CreateBuildTypePage.openManually(testData.getProject().getId())
                 .createFormManually(testData.getBuildType().getName(), "");
         CreateBuildTypeErrors.checkEmptyBuildTypeIdError();
 
@@ -189,7 +189,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
 
         step("Check that buildType wasn't created with empty buildType name");
         var invalidBuildTypeId = RandomData.getStringWith_();
-        CreateBuildTypePage.open(testData.getProject().getId())
+        CreateBuildTypePage.openManually(testData.getProject().getId())
                 .createFormManually(testData.getBuildType().getName(), invalidBuildTypeId);
         CreateBuildTypeErrors.checkInvalidBuildTypeIdError(invalidBuildTypeId);
 

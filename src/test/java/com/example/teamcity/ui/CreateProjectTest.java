@@ -24,7 +24,7 @@ public class CreateProjectTest extends BaseUiTest {
         createFirstProject();
 
         step("Create a project with URL");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openUrlCreation("_Root")
                         .createFormWithUrl(REPO_URL).checkConnectionMessage()
                         .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
 
@@ -58,7 +58,7 @@ public class CreateProjectTest extends BaseUiTest {
         int count = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("").getCount();
 
         step("Create a project with empty URL");
-        CreateProjectPage.open("_Root").createFormWithUrl("");
+        CreateProjectPage.openUrlCreation("_Root").createFormWithUrl("");
 
         step("Check that error appears 'URL must not be empty'");
         CreateProjectErrors.checkEmptyUrlError();
@@ -81,7 +81,7 @@ public class CreateProjectTest extends BaseUiTest {
         int count = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("").getCount();
 
         step("Create a project with empty name");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openUrlCreation("_Root")
                 .createFormWithUrl(REPO_URL)
                 .setupProjectAfterUrl("", testData.getBuildType().getName());
 
@@ -109,8 +109,7 @@ public class CreateProjectTest extends BaseUiTest {
         createFirstProject();
 
         step("Create a project manually");
-        CreateProjectPage.open("_Root");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openManualCreation("_Root")
                 .createFormManually(testData.getProject().getName(),testData.getProject().getId());
         EditProjectPage.checkSuccessMessageText(testData.getProject().getName());
 
@@ -145,7 +144,7 @@ public class CreateProjectTest extends BaseUiTest {
         int count = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("").getCount();
 
         step("Create a project with empty project id");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openManualCreation("_Root")
                 .createFormManually("",testData.getProject().getId());
         CreateProjectErrors.checkEmptyProjectNameErrorManual();
 

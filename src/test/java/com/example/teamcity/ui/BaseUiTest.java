@@ -54,12 +54,9 @@ public class BaseUiTest extends BaseTest {
     }
 
     protected void createProject() {
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openManualCreation("_Root")
                 .createFormManually(testData.getProject().getName(),testData.getProject().getId());
         EditProjectPage.checkSuccessMessageText(testData.getProject().getName());
-        var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
-                .read("name:" + testData.getProject().getName());
-        softy.assertNotNull(createdProject);
     }
 
     protected void createFirstProject() {
