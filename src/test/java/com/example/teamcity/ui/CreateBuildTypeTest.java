@@ -55,7 +55,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         step("Create a project with URL");
         CreateProjectPage.open("_Root")
                 .createFormWithUrl(REPO_URL).checkConnectionMessage()
-                .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
+                .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
 
         step("Check that build type was successfully created with correct data on UI level");
         var buildTypeExists = ProjectsPage.open().clickAllProjects().getBuildTypes().stream()

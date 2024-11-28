@@ -24,6 +24,7 @@ public abstract class CreateBasePage extends BasePage {
     protected SelenideElement description = $("#description");
 
     protected void baseWithUrlCreateForm(String url) {
+        urlInput.shouldBe(Condition.appear);
         urlInput.val(url);
         submitButton.shouldBe(Condition.visible);
         submitButton.click();
@@ -34,9 +35,11 @@ public abstract class CreateBasePage extends BasePage {
     }
 
     protected void baseManualCreateProjectForm(String projectName, String projectId) {
+        projectNameInput.shouldBe(Condition.appear);
         projectNameInput.val(projectName);
+        projectIdInput.shouldBe(Condition.appear);
         projectIdInput.val(projectId);
-        createButton.shouldBe(Condition.visible);
+        createButton.shouldBe(Condition.clickable);
         createButton.click();
     }
 
@@ -46,20 +49,20 @@ public abstract class CreateBasePage extends BasePage {
     }
 
     protected void switchToCreateProjectManually() {
-        createManuallyProjectLink.shouldBe(Condition.visible);
+        createManuallyProjectLink.shouldBe(Condition.clickable);
         createManuallyProjectLink.click();
         projectNameInput.shouldBe(Condition.visible);
     }
 
     protected void switchToCreateBuildTypeManually() {
-        createManuallyBuildTypeLink.shouldBe(Condition.visible);
+        createManuallyBuildTypeLink.shouldBe(Condition.clickable);
         createManuallyBuildTypeLink.click();
     }
 
     protected void baseManualCreateBuildTypeForm(String buildTypeName, String buildTypeId) {
         buildTypeNameInput.val(buildTypeName);
         buildTypeIdInput.val(buildTypeId);
-        createButton.shouldBe(Condition.visible);
+        createButton.shouldBe(Condition.clickable);
         createButton.click();
     }
 }

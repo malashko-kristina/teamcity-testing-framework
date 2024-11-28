@@ -26,7 +26,7 @@ public class CreateProjectTest extends BaseUiTest {
         step("Create a project with URL");
         CreateProjectPage.open("_Root")
                         .createFormWithUrl(REPO_URL).checkConnectionMessage()
-                        .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
+                        .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
 
         step("Check that all entities (project, build type) was successfully created with correct data on API level ");
         var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
@@ -83,7 +83,7 @@ public class CreateProjectTest extends BaseUiTest {
         step("Create a project with empty name");
         CreateProjectPage.open("_Root")
                 .createFormWithUrl(REPO_URL)
-                .setupProject("", testData.getBuildType().getName());
+                .setupProjectAfterUrl("", testData.getBuildType().getName());
 
         step("Check that error appears 'Project name must not be empty");
         CreateProjectErrors.checkEmptyProjectNameErrorUrl();
