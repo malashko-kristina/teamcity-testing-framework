@@ -6,6 +6,8 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import com.example.teamcity.ui.pages.BasePage;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.$;
 
 public abstract class CreateBasePage extends BasePage {
@@ -27,9 +29,9 @@ public abstract class CreateBasePage extends BasePage {
     protected SelenideElement description = $("#description");
 
     protected void baseWithUrlCreateForm(String url) {
-        urlInput.shouldBe(Condition.appear);
+        urlInput.shouldBe(Condition.visible, ELEMENT_WAITING );
         urlInput.val(url);
-        submitButton.shouldBe(Condition.visible);
+        submitButton.shouldBe(Condition.visible, ELEMENT_WAITING);
         submitButton.click();
     }
 
@@ -38,37 +40,38 @@ public abstract class CreateBasePage extends BasePage {
     }
 
     protected void baseManualCreateProjectForm(String projectName, String projectId) {
-        projectNameInput.shouldBe(Condition.visible);
+        projectNameInput.shouldBe(Condition.visible, ELEMENT_WAITING);
         projectNameInput.val(projectName);
-        projectIdInput.shouldBe(Condition.appear);
+        projectIdInput.shouldBe(Condition.visible, ELEMENT_WAITING);
         projectIdInput.val(projectId);
-        createButton.shouldBe(Condition.clickable);
+        createButton.shouldBe(Condition.visible, ELEMENT_WAITING);
         createButton.click();
     }
 
     protected void switchToCreateFromUrl() {
-        createFromUrlLink.shouldBe(Condition.visible);
+        createFromUrlLink.shouldBe(Condition.visible, ELEMENT_WAITING);
         createFromUrlLink.click();
     }
 
     protected void switchToCreateProjectManually() {
         Selenide.sleep(2000);
-        createManuallyProjectLink.shouldBe(Condition.visible);
-        createManuallyProjectLink.click();
+        createManuallyProjectLink.shouldBe(Condition.visible, ELEMENT_WAITING);
         createManuallyProjectLink.click();
         Selenide.sleep(2000);
-        projectNameInput.shouldBe(Condition.visible);
+        projectNameInput.shouldBe(Condition.visible, ELEMENT_WAITING);
     }
 
     protected void switchToCreateBuildTypeManually() {
-        createManuallyBuildTypeLink.shouldBe(Condition.clickable);
+        createManuallyBuildTypeLink.shouldBe(Condition.visible, ELEMENT_WAITING);
         createManuallyBuildTypeLink.click();
     }
 
     protected void baseManualCreateBuildTypeForm(String buildTypeName, String buildTypeId) {
+        buildTypeNameInput.shouldBe(Condition.visible, ELEMENT_WAITING);
         buildTypeNameInput.val(buildTypeName);
+        buildTypeIdInput.shouldBe(Condition.visible, ELEMENT_WAITING);
         buildTypeIdInput.val(buildTypeId);
-        createButton.shouldBe(Condition.clickable);
+        createButton.shouldBe(Condition.visible, ELEMENT_WAITING);
         createButton.click();
     }
 }
