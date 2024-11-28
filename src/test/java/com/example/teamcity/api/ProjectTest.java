@@ -97,7 +97,8 @@ public class ProjectTest extends BaseApiTest {
         userUncheckRequests.getRequest(PROJECTS)
                 .read("id:" + projectIdWithInvalidSymbol.getId())
                 .then().statusCode(HttpStatus.SC_NOT_FOUND)
-                .body(Matchers.containsString("Project cannot be found by external id '%s'".formatted(projectIdWithInvalidSymbol.getId())));
+                .body(Matchers.containsString("Could not find the entity requested. Check the reference" +
+                        " is correct and the user has permissions to access the entity"));
 
     }
 
