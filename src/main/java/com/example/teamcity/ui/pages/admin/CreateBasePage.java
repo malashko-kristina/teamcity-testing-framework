@@ -15,7 +15,7 @@ public abstract class CreateBasePage extends BasePage {
     protected SelenideElement buildTypeNameInput = $("#buildTypeName");
     protected SelenideElement buildTypeIdInput = $("#buildTypeExternalId");
     protected SelenideElement connectionSuccessfulMessage = $(".connectionSuccessful");
-    protected SelenideElement projectNameInput = $("input[id='name']");
+    protected SelenideElement projectNameInput = $("#name");
     protected SelenideElement projectIdInput = $("#externalId");
     protected SelenideElement createButton = $("input[class*='submitButton']");
     protected SelenideElement createFromUrlLink = $("a[href = '#createFromUrl']");
