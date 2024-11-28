@@ -1,6 +1,7 @@
 package com.example.teamcity.ui.pages.admin;
 
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
 
 public class CreateBuildTypePage extends CreateBasePage{
     private static final String BUILD_TYPE_SHOW_MODE = "createBuildTypeMenu";
@@ -14,7 +15,7 @@ public class CreateBuildTypePage extends CreateBasePage{
     }
 
     public CreateBuildTypePage createFormWithUrl(String url) {
-        switchToCreateFromUrl();
+        WebDriverRunner.url().equals(CreateBuildTypePage.class);
         baseWithUrlCreateForm(url);
         return this; // возвращаем ту же самую страничку, чтобы поддержать цепочку
     }

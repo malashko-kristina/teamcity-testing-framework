@@ -3,6 +3,7 @@ package com.example.teamcity.ui.pages.admin;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 
 import static com.codeborne.selenide.Selenide.$;
 
@@ -19,6 +20,7 @@ public class CreateProjectPage extends CreateBasePage {
     }
 
     public CreateProjectPage createFormWithUrl(String url) {
+        WebDriverRunner.url().equals(CreateProjectPage.class);
         baseWithUrlCreateForm(url);
         return this; // возвращаем ту же самую страничку, чтобы поддержать цепочку
     }
@@ -30,7 +32,6 @@ public class CreateProjectPage extends CreateBasePage {
 
     public CreateProjectPage createFormManually (String projectName, String projectId) {
         Selenide.sleep(4000);
-        switchToCreateProjectManually();
         baseManualCreateProjectForm(projectName, projectId);
         return this;
     }
