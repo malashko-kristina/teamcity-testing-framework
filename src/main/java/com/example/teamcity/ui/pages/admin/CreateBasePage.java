@@ -35,7 +35,7 @@ public abstract class CreateBasePage extends BasePage {
     }
 
     protected void baseManualCreateProjectForm(String projectName, String projectId) {
-        projectNameInput.shouldBe(Condition.appear);
+        projectNameInput.shouldBe(Condition.visible);
         projectNameInput.val(projectName);
         projectIdInput.shouldBe(Condition.appear);
         projectIdInput.val(projectId);
@@ -50,6 +50,7 @@ public abstract class CreateBasePage extends BasePage {
 
     protected void switchToCreateProjectManually() {
         createManuallyProjectLink.shouldBe(Condition.clickable);
+        createManuallyProjectLink.click();
         createManuallyProjectLink.click();
         projectNameInput.shouldBe(Condition.visible);
     }
