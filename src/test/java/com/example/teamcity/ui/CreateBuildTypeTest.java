@@ -166,7 +166,7 @@ public class CreateBuildTypeTest extends BaseUiTest {
         step("Check number of buildTypes");
         int count = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("").getCount();
 
-        step("Check that buildType wasn't created with empty buildType name");
+        step("Check that buildType wasn't created with an empty buildType name");
         var invalidBuildTypeId = RandomData.getStringWith_();
         CreateBuildTypePage.openManually(testData.getProject().getId())
                 .createFormManually(testData.getBuildType().getName(), invalidBuildTypeId);
