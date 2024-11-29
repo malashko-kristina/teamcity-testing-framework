@@ -15,7 +15,7 @@ import static io.qameta.allure.Allure.step;
 @Test(groups = {"Regression"})
 public class CreateProjectTest extends BaseUiTest {
 
-    @Test(description = "User should not be able to create a project with empty URL", groups = {"Negative"})
+    @Test(description = "User should not be able to create project with empty URL", groups = {"Negative"})
     public void userCreatesProjectWithEmptyUrl() {
         step("Login as a user");
         loginAs(testData.getUser());
