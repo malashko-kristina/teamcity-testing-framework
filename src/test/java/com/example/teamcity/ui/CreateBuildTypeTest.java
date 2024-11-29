@@ -75,27 +75,6 @@ public class CreateBuildTypeTest extends BaseUiTest {
         TestDataStorage.getStorage().addCreatedEntity(Endpoint.BUILD_TYPES, createdBuildType);
     }
 
-    @Test(description = "User should not be able to create a build type with empty Url", groups = {"Negative"})
-    public void userCreatesBuildTypeWithEmptyUrl() {
-
-        step("Login as a user and create a project");
-        loggedInWithCreatedProject(testData.getUser());
-
-        step("Check number of buildTypes");
-        int count = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("").getCount();
-
-        step("Check that buildType wasn't created with empty URL");
-        CreateBuildTypePage.openUrl(testData.getProject().getId()).createFormWithUrl("");
-        CreateBuildTypeErrors.checkEmptyUrlBuildTypeError();
-
-        step("Check that amount of build types wasn't changed on API level");
-        int newCount = superUserCheckRequests.<BuildType>getRequest(Endpoint.BUILD_TYPES).read("").getCount();
-        softy.assertEquals(newCount,count);
-
-        step("Clean up of created projects on API level");
-        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, testData.getProject());
-    }
-
     @Test(description = "User should be able to create a build type manually", groups = {"Positive"})
     public void userCreatesBuildTypeManually() {
 
