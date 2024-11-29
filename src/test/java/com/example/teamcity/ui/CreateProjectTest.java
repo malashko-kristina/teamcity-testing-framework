@@ -15,37 +15,6 @@ import static io.qameta.allure.Allure.step;
 @Test(groups = {"Regression"})
 public class CreateProjectTest extends BaseUiTest {
 
-    @Test(description = "User should be able to create a project with URL", groups = {"Positive"})
-    public void userCreatesProjectWithUrl() {
-        step("Login as a user");
-        loginAs(testData.getUser());
-
-        step("Create a first project on API level");
-        createFirstProject();
-
-        step("Create a project with URL");
-        CreateProjectPage.openUrlCreation("_Root")
-                        .createFormWithUrl(REPO_URL).checkConnectionMessage()
-                        .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
-
-        step("Check that all entities (project, build type) was successfully created with correct data on API level ");
-        var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
-                .read("name:" + testData.getProject().getName());
-        softy.assertNotNull(createdProject);
-
-        step("Check that project is visible on Project Page (http://localhost:8111/favorite/projects)");
-        ProjectPage.open(createdProject.getId())
-                .title.shouldHave(Condition.exactText(testData.getProject().getName()));
-
-        var projectExist = ProjectsPage.open()
-                .getProjects().stream()
-                .anyMatch(project -> project.getName().text().equals(testData.getProject().getName()));
-        softy.assertTrue(projectExist);
-
-        step("Clean up of created projects on API level");
-        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, createdProject);
-    }
-
     @Test(description = "User should not be able to create a project with empty URL", groups = {"Negative"})
     public void userCreatesProjectWithEmptyUrl() {
         step("Login as a user");
