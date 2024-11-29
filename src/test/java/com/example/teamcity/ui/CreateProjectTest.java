@@ -15,6 +15,20 @@ import static io.qameta.allure.Allure.step;
 @Test(groups = {"Regression"})
 public class CreateProjectTest extends BaseUiTest {
 
+    @Test(description = "User should be able to create a project with URL", groups = {"Positive"})
+    public void userCreatesProjectWithUrl() {
+        step("Login as a user");
+        loginAs(testData.getUser());
+
+        step("Create a first project on API level");
+        createFirstProject();
+
+        step("Create a project with URL");
+        CreateProjectPage.openUrlCreation("_Root")
+                .createFormWithUrl(REPO_URL).checkConnectionMessage()
+                .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
+    }
+
     @Test(description = "User should not be able to create project with empty URL", groups = {"Negative"})
     public void userCreatesProjectWithEmptyUrl() {
         step("Login as a user");
