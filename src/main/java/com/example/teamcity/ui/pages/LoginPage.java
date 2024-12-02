@@ -29,6 +29,4 @@ public class LoginPage extends BasePage {
 
         return Selenide.page(ProjectPage.class);
     }
-
-
 }

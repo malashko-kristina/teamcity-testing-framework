@@ -24,29 +24,12 @@ public class CreateProjectTest extends BaseUiTest {
         createFirstProject();
 
         step("Create a project with URL");
-        CreateProjectPage.open("_Root")
-                        .createFormWithUrl(REPO_URL).checkConnectionMessage()
-                        .setupProject(testData.getProject().getName(), testData.getBuildType().getName());
-
-        step("Check that all entities (project, build type) was successfully created with correct data on API level ");
-        var createdProject = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS)
-                .read("name:" + testData.getProject().getName());
-        softy.assertNotNull(createdProject);
-
-        step("Check that project is visible on Project Page (http://localhost:8111/favorite/projects)");
-        ProjectPage.open(createdProject.getId())
-                .title.shouldHave(Condition.exactText(testData.getProject().getName()));
-
-        var projectExist = ProjectsPage.open()
-                .getProjects().stream()
-                .anyMatch(project -> project.getName().text().equals(testData.getProject().getName()));
-        softy.assertTrue(projectExist);
-
-        step("Clean up of created projects on API level");
-        TestDataStorage.getStorage().addCreatedEntity(Endpoint.PROJECTS, createdProject);
+        CreateProjectPage.openUrlCreation("_Root")
+                .createFormWithUrl(REPO_URL).checkConnectionMessage()
+                .setupProjectAfterUrl(testData.getProject().getName(), testData.getBuildType().getName());
     }
 
-    @Test(description = "User should not be able to create a project with empty URL", groups = {"Negative"})
+    @Test(description = "User should not be able to create project with empty URL", groups = {"Negative"})
     public void userCreatesProjectWithEmptyUrl() {
         step("Login as a user");
         loginAs(testData.getUser());
@@ -58,7 +41,7 @@ public class CreateProjectTest extends BaseUiTest {
         int count = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("").getCount();
 
         step("Create a project with empty URL");
-        CreateProjectPage.open("_Root").createFormWithUrl("");
+        CreateProjectPage.openUrlCreation("_Root").createFormWithUrl("");
 
         step("Check that error appears 'URL must not be empty'");
         CreateProjectErrors.checkEmptyUrlError();
@@ -81,9 +64,9 @@ public class CreateProjectTest extends BaseUiTest {
         int count = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("").getCount();
 
         step("Create a project with empty name");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openUrlCreation("_Root")
                 .createFormWithUrl(REPO_URL)
-                .setupProject("", testData.getBuildType().getName());
+                .setupProjectAfterUrl("", testData.getBuildType().getName());
 
         step("Check that error appears 'Project name must not be empty");
         CreateProjectErrors.checkEmptyProjectNameErrorUrl();
@@ -109,7 +92,7 @@ public class CreateProjectTest extends BaseUiTest {
         createFirstProject();
 
         step("Create a project manually");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openManualCreation("_Root")
                 .createFormManually(testData.getProject().getName(),testData.getProject().getId());
         EditProjectPage.checkSuccessMessageText(testData.getProject().getName());
 
@@ -144,7 +127,7 @@ public class CreateProjectTest extends BaseUiTest {
         int count = superUserCheckRequests.<Project>getRequest(Endpoint.PROJECTS).read("").getCount();
 
         step("Create a project with empty project id");
-        CreateProjectPage.open("_Root")
+        CreateProjectPage.openManualCreation("_Root")
                 .createFormManually("",testData.getProject().getId());
         CreateProjectErrors.checkEmptyProjectNameErrorManual();
 

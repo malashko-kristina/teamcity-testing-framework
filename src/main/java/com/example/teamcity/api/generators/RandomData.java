@@ -64,6 +64,7 @@ public final class RandomData {
 
     public static String getStringWithRandomSpecialCharacter() {
         StringBuilder stringBuilder = new StringBuilder(LENGTH);
+        boolean hasSpecialChar = false;
 
         // Генерируем первую букву (латиница)
         stringBuilder.append(getRandomAlphabeticCharacter());
@@ -74,16 +75,30 @@ public final class RandomData {
         // Заполняем строку обычными символами
         for (int i = 1; i < LENGTH; i++) {
             if (i == specialCharIndex) {
-                // Вставляем случайный специальный символ в случайную позицию
-                stringBuilder.append(getRandomSpecialCharacter());
+                // Вставляем случайный специальный символ
+                stringBuilder.append(getRandomInvalidSpecialCharacter()); // Изменили на метод, генерирующий недопустимые символы
+                hasSpecialChar = true;
             } else {
                 // Вставляем обычный алфавитный символ
                 stringBuilder.append(getRandomAlphabeticCharacter());
             }
         }
 
+        // Если не был вставлен специальный символ, добавляем его в случайное место
+        if (!hasSpecialChar) {
+            stringBuilder.setCharAt(random.nextInt(LENGTH - 1) + 1, getRandomInvalidSpecialCharacter()); // Изменили на метод, генерирующий недопустимые символы
+        }
+
         return stringBuilder.toString();
     }
+
+    // Пример метода для генерации недопустимых специальных символов
+    private static char getRandomInvalidSpecialCharacter() {
+        // Список символов, которые явно не должны быть в id
+        char[] invalidSpecialChars = {'!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '{', '}', '[', ']', ':', ';', '"', '\'', '<', '>', ',', '.', '?'};
+        return invalidSpecialChars[random.nextInt(invalidSpecialChars.length)];
+    }
+
 
     private static char getRandomSpecialCharacter() {
         int randomIndex = random.nextInt(SPECIAL_CHARACTERS.length()); // Генерируем случайный индекс

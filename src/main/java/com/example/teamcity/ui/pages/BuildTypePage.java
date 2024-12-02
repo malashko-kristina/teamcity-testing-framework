@@ -12,7 +12,7 @@ public class BuildTypePage extends BasePage {
     public SelenideElement title = $("h1 > span");
 
     @Step("Open a buildType page")
-    public static BuildTypePage open(String buildTypeId) {
+    public static BuildTypePage openManually(String buildTypeId) {
         return Selenide.open(BUILD_TYPE_URL.formatted(buildTypeId), BuildTypePage.class);
     }
 }
